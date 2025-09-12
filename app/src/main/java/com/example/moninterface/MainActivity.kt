@@ -26,10 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.example.moninterface.ui.theme.MonInterfaceTheme
-
-
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -41,7 +38,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     topBar = {
                         TopAppBar(
-                            title = { Text("Evenement") },
+                            title = { Text("Evènements") },
                             navigationIcon = { Icon(Icons.Filled.Menu, contentDescription = null) },
                             actions = { Icon(Icons.Filled.Favorite, contentDescription = null) }
                         )
@@ -60,7 +57,7 @@ class MainActivity : ComponentActivity() {
                         ) {
                             Image(
                                 painter = painterResource(R.drawable.affiche_forum),
-                                contentDescription = "Logo ISIS",
+                                contentDescription = "Affiche du forum ISIS",
                                 modifier = Modifier.padding(8.dp)
                             )
                             Text(
@@ -80,13 +77,11 @@ class MainActivity : ComponentActivity() {
                                     onClick = { /*TODO*/ },
                                     modifier = Modifier.padding(8.dp)
                                 ) {
-                                    Text("Je participe !")
+                                    Text("Inscription")
                                 }
                                 Button(
                                     onClick = { /*TODO*/ },
                                     modifier = Modifier.padding(8.dp),
-                                    colors = androidx.compose.material3.ButtonDefaults.outlinedButtonColors(),
-                                    border = androidx.compose.material3.ButtonDefaults.outlinedButtonBorder
                                 ) {
                                     Text("Pas intéressé")
                                 }
@@ -102,10 +97,8 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    MonInterfaceTheme(
-        content = {
-            Text(text = "Hello Android!")
-        }
-    )
+    MonInterfaceTheme {
+        Text(text = "Hello Android!")
+    }
 }
 
