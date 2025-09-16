@@ -5,89 +5,100 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.moninterface.ui.theme.MonInterfaceTheme
 
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             MonInterfaceTheme {
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = { Text("Evènements") },
-                            navigationIcon = { Icon(Icons.Filled.Menu, contentDescription = null) },
-                            actions = { Icon(Icons.Filled.Favorite, contentDescription = null) }
-                        )
-                    },
-                    modifier = Modifier.fillMaxSize()
+                EventScreen()
+            }
+        }
+    }
+}
 
-                ) { innerPadding ->
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Image(
-                                painter = painterResource(R.drawable.affiche_forum),
-                                contentDescription = "Affiche du forum ISIS",
-                                modifier = Modifier.padding(8.dp)
-                            )
-                            Text(
-                                modifier = Modifier.padding(8.dp),
-                                text = "Où : Ecole ingénieur ISIS"
-                            )
-                            Text(
-                                modifier = Modifier.padding(8.dp),
-                                text = "Quand : 24 octobre"
-                            )
-                            Row(
-                                horizontalArrangement = Arrangement.Center,
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(8.dp)
-                            ) {
-                                Button(
-                                    onClick = { /*TODO*/ },
-                                    modifier = Modifier.padding(8.dp)
-                                ) {
-                                    Text("Inscription")
-                                }
-                                Button(
-                                    onClick = { /*TODO*/ },
-                                    modifier = Modifier.padding(8.dp),
-                                ) {
-                                    Text("Pas intéressé")
-                                }
-                            }
-                        }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EventScreen() {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Evènements") },
+                navigationIcon = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(Icons.Default.Menu, contentDescription = "Menu")
                     }
+                },
+                actions = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(Icons.Default.FavoriteBorder, contentDescription = "Favorite")
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceAround
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.affiche_forum),
+                contentDescription = "Event Poster",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .clip(RoundedCornerShape(16.dp)),
+                contentScale = ContentScale.FillWidth
+            )
+            Column(
+                modifier = Modifier.padding(vertical = 24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Où : Ecole ingénieur ISIS",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Quand : 24 octobre",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Button(onClick = { /*TODO*/ }) {
+                    Text("Inscription")
+                }
+                OutlinedButton(onClick = { /*TODO*/ }) {
+                    Text("Pas intéressé")
                 }
             }
         }
@@ -98,7 +109,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     MonInterfaceTheme {
-        Text(text = "Hello Android!")
+        EventScreen()
     }
 }
-
