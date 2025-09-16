@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.example.moninterface.ui.theme.MonInterfaceTheme
 
 class MainActivity : ComponentActivity() {
@@ -64,14 +65,9 @@ fun EventScreen() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceAround
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.affiche_forum),
-                contentDescription = "Event Poster",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .clip(RoundedCornerShape(16.dp)),
-                contentScale = ContentScale.FillWidth
+            AsyncImage(
+                model = "https://isis.univ-jfc.fr/sites/isis.univ-jfc.fr/files/images-contenu/2024-09/Affiche_Forum.png",
+                contentDescription = "Event Image"
             )
             Column(
                 modifier = Modifier.padding(vertical = 24.dp),
