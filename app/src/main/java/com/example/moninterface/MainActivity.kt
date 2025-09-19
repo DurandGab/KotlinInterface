@@ -10,8 +10,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,89 +25,99 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation3.runtime.entry
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.ui.NavDisplay
 import coil3.compose.AsyncImage
 import com.example.moninterface.ui.theme.MonInterfaceTheme
+import java.util.Map.entry
+
+// Définition des destinations
+data object Destination1
+data object Destination2
+data object Destination3
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val backStack = remember { mutableStateListOf<Any>(Destination1) }
+            val currentTitle = when (backStack.last()) {
+                Destination1 -> "Évenement"
+                Destination2 -> "Inscription"
+                Destination3 -> "Désolé"
+                else -> ""
+            }
             MonInterfaceTheme {
-                EventScreen()
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = { Text(currentTitle) },
+                            navigationIcon = {
+                                IconButton(onClick = { backStack.removeLastOrNull() }) {
+                                    Icon(Icons.Default.Menu, contentDescription = "Menu")
+                                }
+                            },
+                            actions = {
+                                IconButton(onClick = { /*TODO*/ }) {
+                                    Icon(
+                                        Icons.Default.FavoriteBorder,
+                                        contentDescription = "Favorite"
+                                    )
+                                }
+                            }
+                        )
+                    }
+                ) { innerPadding ->
+                    NavDisplay(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(innerPadding)
+                                .padding(16.dp),
+                            backStack = backStack,
+                            entryProvider = entryProvider {
+                                entry<Destination1> { EcranDestination1(backStack) }
+                                entry<Destination2> { EcranDestination2(backStack) }
+                                entry<Destination3> { EcranDestination3(backStack) }
+                            }
+                        )
+                }
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventScreen() {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Evènements") },
-                navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Default.Menu, contentDescription = "Menu")
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Default.FavoriteBorder, contentDescription = "Favorite")
-                    }
-                }
-            )
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceAround
+fun EcranDestination1(backStack: MutableList<Any>) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        AsyncImage(
+            model = "https://isis.univ-jfc.fr/sites/isis.univ-jfc.fr/files/images-contenu/2024-09/Affiche_Forum.png",
+            contentDescription = "Event Image"
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        Text(text = "Où : Ecole ingénieur ISIS")
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = "Quand : 24 octobre")
+        Spacer(modifier = Modifier.height(24.dp))
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            AsyncImage(
-                model = "https://isis.univ-jfc.fr/sites/isis.univ-jfc.fr/files/images-contenu/2024-09/Affiche_Forum.png",
-                contentDescription = "Event Image"
-            )
-            Column(
-                modifier = Modifier.padding(vertical = 24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Où : Ecole ingénieur ISIS",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Quand : 24 octobre",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
+            Button(onClick = { backStack.add(Destination2) }) {
+                Text("Inscription")
             }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Button(onClick = { /*TODO*/ }) {
-                    Text("Inscription")
-                }
-                OutlinedButton(onClick = { /*TODO*/ }) {
-                    Text("Pas intéressé")
-                }
+            OutlinedButton(onClick = { backStack.add(Destination3) }) {
+                Text("Pas intéressé")
             }
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MonInterfaceTheme {
-        EventScreen()
-    }
-}
