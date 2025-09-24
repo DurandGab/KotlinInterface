@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -91,33 +92,4 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun EcranDestination1(backStack: MutableList<Any>) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        AsyncImage(
-            model = "https://isis.univ-jfc.fr/sites/isis.univ-jfc.fr/files/images-contenu/2024-09/Affiche_Forum.png",
-            contentDescription = "Event Image"
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        Text(text = "Où : Ecole ingénieur ISIS")
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Quand : 24 octobre")
-        Spacer(modifier = Modifier.height(24.dp))
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(onClick = { backStack.add(Destination2) }) {
-                Text("Inscription")
-            }
-            OutlinedButton(onClick = { backStack.add(Destination3) }) {
-                Text("Pas intéressé")
-            }
-        }
-    }
-}
 
